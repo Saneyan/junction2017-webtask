@@ -4,48 +4,42 @@
 
 BEGIN;
 CREATE TABLE "user" (
-    "id" int  NOT NULL ,
-    "name" varchar  NOT NULL ,
-    "age" varchar  NOT NULL ,
-    "job_track" int  NOT NULL ,
-    "email" varchar  NOT NULL ,
-    "facebook_id" varchar  NOT NULL ,
-    CONSTRAINT "pk_user" PRIMARY KEY ( "id" )
+    "id" serial primary key ,
+    "name" varchar ,
+    "age" int,
+    "job_track" int ,
+    "email" varchar ,
+    "facebook_id" varchar
 );
 
 CREATE TABLE "employer" (
-    "id" int  NOT NULL ,
-    "user_id" int  NOT NULL ,
-    "name_of_company" varchar  NOT NULL ,
-    CONSTRAINT "pk_employer" PRIMARY KEY ( "id" )
+    "id" serial primary key ,
+    "user_id" int ,
+    "name_of_company" varchar
 );
 
 CREATE TABLE "job_seeker" (
-    "id" int  NOT NULL ,
-    "user_id" int  NOT NULL ,
-    "nation_currently_stay" varchar  NOT NULL ,
-    "current_job_type" int  NOT NULL ,
-    CONSTRAINT "pk_job_seeker" PRIMARY KEY ( "id" )
+    "id" serial primary key ,
+    "user_id" int ,
+    "nation_currently_stay" varchar ,
+    "current_job_type" int
 );
 
 CREATE TABLE "question" (
-    "id" int  NOT NULL ,
-    "content" varchar  NOT NULL ,
-    CONSTRAINT "pk_question" PRIMARY KEY ( "id" )
+    "id" serial primary key ,
+    "content" varchar
 );
 
 CREATE TABLE "option" (
-    "id" int  NOT NULL ,
-    "question_id" int  NOT NULL ,
-    "content" varchar  NOT NULL ,
-    CONSTRAINT "pk_option" PRIMARY KEY ( "id" )
+    "id" serial primary key ,
+    "question_id" int ,
+    "content" varchar
 );
 
 CREATE TABLE "answer" (
-    "id" int  NOT NULL ,
-    "option_id" int  NOT NULL ,
-    "user_id" int  NOT NULL ,
-    CONSTRAINT "pk_answer" PRIMARY KEY ( "id" )
+    "id" serial primary key ,
+    "option_id" int ,
+    "user_id" int
 );
 COMMIT;
 

@@ -3,7 +3,7 @@
 const pg = require('pg')
 const _ = require('lodash')
 
-module.exports = function (context, cb) {
+module.exports = async function (context, cb) {
   const pool = new pg.Pool({
     user: context.secrets.PGUSER,
     host: context.secrets.PGHOST,
@@ -13,8 +13,9 @@ module.exports = function (context, cb) {
   });
 
   const nextQuestionId = context.data.question_id || 0;
+  const answeredOptionId = context.data.option_id || null;
 
-  let query = `
+  let selectQuery = `
     SELECT
       q.content AS question_content,
       o.content AS option_content,
@@ -25,8 +26,20 @@ module.exports = function (context, cb) {
     AND q.id = ${nextQuestionId+1}
   `.trim().replace(/\s+/gi, " ");
 
-  pool.query(query, (err, res) => {
+  try {
+    const res = await pool.query(selectQuery);
+
+    let insertQuery
+    if (answeredOptionId) {
+      insertQuery = `
+        INSERT INTO answer(user_id, option_id)
+        VALUES(1, ${answeredOptionId})
+      `.trim().replace(/\s+/gi, " ");
+      await pool.query(insertQuery)
+    }
+
     pool.end();
+
     // parse response
     let next;
     if (res && res.rows && res.rows.length > 0) {
@@ -38,7 +51,9 @@ module.exports = function (context, cb) {
     }
     // TODO: add new answer if given in request body
     // TODO: don't give query or error on production
-    const response = { next, err, query }
+    const response = { next, q: [selectQuery, insertQuery] }
     cb(null, response);
-  })
+  } catch (err) {
+    cb(null, err);
+  }
 }
