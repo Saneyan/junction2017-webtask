@@ -1,1 +1,0 @@
-wt create hello.js
