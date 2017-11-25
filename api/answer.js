@@ -12,8 +12,8 @@ module.exports = async function (context, cb) {
     port: context.secrets.PGPORT
   });
 
-  const nextQuestionId = context.data.question_id || 0;
-  const answeredOptionId = context.data.option_id || null;
+  const nextQuestionId = parseInt(context.data.question_id) || 0;
+  const answeredOptionId = parseInt(context.data.option_id) || null;
 
   let selectQuery = `
     SELECT
