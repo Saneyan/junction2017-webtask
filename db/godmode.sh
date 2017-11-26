@@ -4,8 +4,7 @@ if [ -z $1 ]; then echo "provide action (create / remove / seed / browse)"; exit
 ACTION=$1
 STAGE=$2
 
-#DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-DIR=/home/saneyan/Development/github.com/saneyan/junction2017-webtask/db
+DIR=$(cd "$(dirname "$0")" && pwd)
 ROOT=$(cd $DIR && cd .. && pwd)
 
 if [ "$ACTION" = "remove" ]; then
